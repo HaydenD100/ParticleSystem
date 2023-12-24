@@ -24,7 +24,7 @@ class Particle:
         self.transparency = 255
         
 class ParticleSystem:
-    def __init__(self,x,y,particleSpeed,size,colour,gravity,lifeTime,time,timePerSpawn,randomParticle,isCircle, gravityForce):
+    def __init__(self,x,y,particleSpeed,size,colour,gravity,lifeTime,time,timePerSpawn,randomParticle,isCircle, gravityForce,angleSpawned, spread):
         self.particles = [] #lists of all particles
         self.x = x #x pos of the particle system
         self.y = y #y pos of the particle system
@@ -41,6 +41,8 @@ class ParticleSystem:
         self.timeTillNextSpawn = time #this is used too check when the next particle should be spawned
         self.randomParticle = randomParticle #this is a boolean too check if the particles should be spawned at a random angle
         self.isCircle = isCircle #checks if the particle should be a circle if false it will be a sqaure 
+        self.angleSpawned = angleSpawned # angle of the velovity the particles will spawn range is from 360 - 0 where 0 is the bottom of the circle
+        self.spread = spread #the distance from the angle the particles that spawn at this can be used to make a trianlge and ranges should be from 360-0
         
         
     #updates all the paricles
@@ -75,12 +77,19 @@ class ParticleSystem:
         
     
         if(self.randomParticle == True):
-            self.angle = random.uniform(0,2 * math.pi)
             
-           
+            angleInRad = self.angleSpawned * math.pi/180
+            spreadInRad = self.spread * math.pi/180
+            angleA = angleInRad + spreadInRad / 2
+            angleB = angleInRad - spreadInRad / 2
+            self.angle = random.uniform(angleA,angleB)
+            
+        else:  
+            self.angle += self.addedAnlge
+            
         vx = math.sin(self.angle) * self.particleSpeed
         vy = math.cos(self.angle) * self.particleSpeed
-        self.angle += self.addedAnlge
+        
             
         self.particles.append(Particle(self.x,self.y,vx,vy,self.size,self.colour,self.gravity,self.lifeTime,time))
         
@@ -120,7 +129,7 @@ class ParticleSystem:
             
 
  
-ps = ParticleSystem(300,250,2,6,(0,0,200),False,4,time.time(),0.01,True, False,0.3)      
+ps = ParticleSystem(300,250,2,6,(0,0,200),False,4,time.time(),0.01,False, False,0.3,270,60)      
 
 def draw():
     screen.fill((255, 255, 255))
@@ -176,7 +185,6 @@ while running:
     
     update()          
     draw()
-
 
 
 
