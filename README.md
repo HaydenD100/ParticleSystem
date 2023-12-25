@@ -30,6 +30,8 @@ ps = ParticleSystem(300,250,2,6,(0,0,200),False,4,time.time(),0.01,True, False,0
 
 ![screenshot](/docs/assets/screenshot4.png)
 
+![screenshot](/docs/assets/screenshot5.png)
+
 ![screenshot](/docs/assets/screenshot1.png)
 
 ![screenshot](/docs/assets/screenshot2.png)
