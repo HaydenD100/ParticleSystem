@@ -1,7 +1,7 @@
 # ParticleSystem
 Pygame Particle System, the source code incoudes the demo for the particle system but to use this particle system in any pygame game copy and paste the two classes particle system and particle, include all includes from the source code and add the update, create particle system methods to the main update method. Too add window collision add the particle collision method in the main update method.
 
-# v0.0.1
+# v1.0.1
 Added image support allowing images to be displayed instead of a circle or sqaure there is an example of this in the third screenshot
 
 #How to create a particle system
