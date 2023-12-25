@@ -9,6 +9,8 @@ import math
 import pygame
 import time
 import random
+import os 
+from pygame.locals import *
 
 class Particle:
     def __init__(self,x,y,vx,vy,size,colour,gravity,lifeTime,time):
@@ -24,7 +26,7 @@ class Particle:
         self.transparency = 255
         
 class ParticleSystem:
-    def __init__(self,x,y,particleSpeed,size,colour,gravity,lifeTime,time,timePerSpawn,randomParticle,isCircle, gravityForce,angleSpawned, spread):
+    def __init__(self,x,y,particleSpeed,size,colour,gravity,lifeTime,time,timePerSpawn,randomParticle,isCircle, gravityForce,angleSpawned, spread, sprite = 0):
         self.particles = [] #lists of all particles
         self.x = x #x pos of the particle system
         self.y = y #y pos of the particle system
@@ -43,7 +45,10 @@ class ParticleSystem:
         self.isCircle = isCircle #checks if the particle should be a circle if false it will be a sqaure 
         self.angleSpawned = angleSpawned # angle of the velovity the particles will spawn range is from 360 - 0 where 0 is the bottom of the circle
         self.spread = spread #the distance from the angle the particles that spawn at this can be used to make a trianlge and ranges should be from 360-0
-        
+        if(sprite != 0):
+            self.sprite = pygame.transform.scale(sprite, (size, size)) #sprite for the particle if this value is 0 then there is no sprite
+        else:
+            self.sprite = sprite
         
     #updates all the paricles
     def UpdateParticles(self,time):
@@ -99,10 +104,12 @@ class ParticleSystem:
 
         for particle in self.particles:
             colour = (particle.colour[0],particle.colour[1],particle.colour[2],particle.transparency)
-            if(self.isCircle == True):
+            if(self.isCircle == True and self.sprite == 0):
                 pygame.draw.circle(surface,colour,(particle.x,particle.y),particle.size,particle.size)
-            else:
+            elif(self.isCircle == False and self.sprite == 0):
                 pygame.draw.rect(surface,colour,(particle.x,particle.y,particle.size,particle.size),particle.size)
+            else:
+                screen.blit(self.sprite, (particle.x, particle.y))
         screen.blit(surface,(0,0))    
         
         
@@ -128,8 +135,9 @@ class ParticleSystem:
 
             
 
- 
-ps = ParticleSystem(300,250,2,6,(0,0,200),False,4,time.time(),0.01,False, False,0.3,270,60)      
+smokeParticle = pygame.image.load(os.path.join("sprites/smokeParticle.png"))
+
+ps = ParticleSystem(300,250,0.3,80,(0,0,200),False,16,time.time(),0.01,True, False,0.01,0,360,smokeParticle)      
 
 def draw():
     screen.fill((255, 255, 255))
@@ -186,6 +194,18 @@ while running:
     update()          
     draw()
 
+
+
+
+
+
+
+
+        
+        
+            
+    
+        
 
 
 
